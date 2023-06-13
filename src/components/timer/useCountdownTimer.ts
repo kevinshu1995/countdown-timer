@@ -3,7 +3,6 @@ import dayjs from "~/utils/dayjs";
 
 export const useCountdownTimer = (countdownDate: string = "") => {
     const now = useSignal("");
-    const isTimeUp = useSignal(true);
     const availableCountdownTimeFormat = ["YYYY", "YYYY-MM-DD", "YYYY-MM-DD HH:mm:ss"];
 
     const updateTime = $(() => {
@@ -15,10 +14,11 @@ export const useCountdownTimer = (countdownDate: string = "") => {
     });
 
     const countdownTime = useComputed$(() => {
-        const diff = dayjs(countdownDate).diff(dayjs(now.value));
-        isTimeUp.value = diff < 0;
+        return dayjs(countdownDate).diff(dayjs(now.value)) || 0;
+    });
 
-        return diff;
+    const isTimeUp = useComputed$(() => {
+        return countdownTime.value <= 0;
     });
 
     const countdownTimeObject = useComputed$(() => {
