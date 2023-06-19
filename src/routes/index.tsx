@@ -7,12 +7,7 @@ export default component$(() => {
     return (
         <>
             <h1>Hi 👋</h1>
-            <CountdownTimer countdownTime={"2023-06-12 19:00:00"} />
-            <p>
-                Can't wait to see what you build with qwik!
-                <br />
-                Happy coding.
-            </p>
+            <CountdownTimer countdownTime={"2023-06-18 19:00:00"} />
         </>
     );
 });
