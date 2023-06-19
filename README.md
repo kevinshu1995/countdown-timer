@@ -1,65 +1,77 @@
-# Qwik City App ⚡️
+# Frontend Mentor - Launch countdown timer solution
 
-- [Qwik Docs](https://qwik.builder.io/)
-- [Discord](https://qwik.builder.io/chat)
-- [Qwik GitHub](https://github.com/BuilderIO/qwik)
-- [@QwikDev](https://twitter.com/QwikDev)
-- [Vite](https://vitejs.dev/)
+This is a solution to the [Launch countdown timer challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/launch-countdown-timer-N0XkGfyz-).
+Frontend Mentor challenges help you improve your coding skills by building realistic projects.
 
----
+> Design Preview
+> ![Design preview for the Launch countdown timer coding challenge](./desktop-preview.jpg)
 
-## Project Structure
+## Table of contents
 
-This project is using Qwik with [QwikCity](https://qwik.builder.io/qwikcity/overview/). QwikCity is just an extra set of tools on top of Qwik to make it easier to build a full site, including directory-based routing, layouts, and more.
+-   [Overview](#overview)
+    -   [The challenge](#the-challenge)
+    -   [Screenshot](#screenshot)
+    -   [Links](#links)
+-   [My process](#my-process)
+    -   [Built with](#built-with)
+    -   [What I learned](#what-i-learned)
+    -   [Useful resources](#useful-resources)
+-   [Author](#author)
 
-Inside your project, you'll see the following directory structure:
+## Overview
 
-```
-├── public/
-│   └── ...
-└── src/
-    ├── components/
-    │   └── ...
-    └── routes/
-        └── ...
-```
+### The challenge
 
-- `src/routes`: Provides the directory based routing, which can include a hierarchy of `layout.tsx` layout files, and an `index.tsx` file as the page. Additionally, `index.ts` files are endpoints. Please see the [routing docs](https://qwik.builder.io/qwikcity/routing/overview/) for more info.
+Users should be able to:
 
-- `src/components`: Recommended directory for components.
+-   See hover states for all interactive elements on the page
+-   See a live countdown timer that ticks down every second (start the count at 14 days)
+-   **Bonus**: When a number changes, make the card flip from the middle
 
-- `public`: Any static assets, like images, can be placed in the public directory. Please see the [Vite public directory](https://vitejs.dev/guide/assets.html#the-public-directory) for more info.
+### Screenshot
 
-## Add Integrations and deployment
+TODO
 
-Use the `pnpm qwik add` command to add additional integrations. Some examples of integrations include: Cloudflare, Netlify or Express server, and the [Static Site Generator (SSG)](https://qwik.builder.io/qwikcity/guides/static-site-generation/).
+<!-- ![](./screenshot.jpg) -->
 
-```shell
-pnpm qwik add # or `yarn qwik add`
-```
+### Links
 
-## Development
+-   vanilla JS version with CodePen: [https://codepen.io/kevinshu/pen/mdQVgpP](https://codepen.io/kevinshu/pen/mdQVgpP)
 
-Development mode uses [Vite's development server](https://vitejs.dev/). During development, the `dev` command will server-side render (SSR) the output.
+TODO
 
-```shell
-npm start # or `yarn start`
-```
+-   Solution URL: [Add solution URL here](https://your-solution-url.com)
+-   Live Site URL: [Add live site URL here](https://your-live-site-url.com)
 
-> Note: during dev mode, Vite may request a significant number of `.js` files. This does not represent a Qwik production build.
+## My process
 
-## Preview
+### Built with
 
-The preview command will create a production build of the client modules, a production build of `src/entry.preview.tsx`, and run a local server. The preview server is only for convenience to locally preview a production build, and it should not be used as a production server.
+-   [Qwik](https://qwik.builder.io/) - JS library
+-   [Tailwindcss](https://tailwindcss.com/) - CSS framework
 
-```shell
-pnpm preview # or `yarn preview`
-```
+### What I learned
 
-## Production
+The flip animation of FlipClock is the most complicated and time-consuming part of the whole project.
+How to make the flip animation close to reality is the biggest challenge.
 
-The production build will generate client and server modules by running both client and server build commands. Additionally, the build command will use Typescript to run a type check on the source code.
+In CSS, besides the basic color gradient effect, `rotateX` is used to create a 3D flip effect, and `backface-visibility: hidden` is used to hide the element that flips to the back. With `transform-style: preserve-3d`, it can simulate a 3D effect better.
 
-```shell
-pnpm build # or `yarn build`
-```
+And JS uses `requestAnimationFrame` to refresh the time, and listens to the `animationend` event on the animated element. When the animation ends, it removes the animation class to prepare for the next flip animation.
+
+Finally, qwik! This project is relatively simple and does not use the route feature, so it can focus more on the core functionality.
+
+It is worth mentioning that because I was not familiar with how it rendering components, the time prop that I passed to the child component at first was not a `Signal`, which caused the child component to re-render every time the prop changed, and could not trigger the animation properly.
+
+Overall, apart from qwik, what I learned the most from this project was CSS, haha.
+
+### Useful resources
+
+-   [Make Flip clock with JS](https://chatium.com/blog~3d-css-animation-flip-down-clock)
+
+## Author
+
+-   [Website](https://kevinshu1995.github.io/)
+-   Github Profile - [@kevinshu1995](https://github.com/kevinshu1995/)
+-   Frontend Mentor - [@kevinshu1995](https://www.frontendmentor.io/profile/kevinshu1995)
+
