@@ -4,7 +4,25 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 module.exports = {
     content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
     theme: {
+        screens: {
+            xs: "375px",
+            ...defaultTheme.screens,
+            "2xl": "1440px",
+        },
         extend: {
+            colors: {
+                primary: {
+                    blue: "#696B96",
+                    red: "#FB6087",
+                },
+                neutral: {
+                    blue: {
+                        DEFAULT: "#343650",
+                        dark: "#1E1F29",
+                        darker: "#191A24",
+                    },
+                },
+            },
             keyframes: ({ theme }) => ({
                 "keyframes-flip-from-back": {
                     "0%": { transform: "rotateX(180deg)", filter: "brightness(0.3)" },
