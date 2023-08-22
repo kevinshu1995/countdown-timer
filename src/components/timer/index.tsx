@@ -8,33 +8,30 @@ interface CountdownTimerProps {
 
 export const CountdownTimer = component$<CountdownTimerProps>(Props => {
     const {
-        now,
-        countdownTime,
+        // now,
+        // countdownTime,
         countdownTimeObject,
-
-        isValidate,
-        isTimeUp,
+        // isValidate,
+        // isTimeUp,
     } = useCountdownTimer(Props.countdownTime);
 
-    const timeDisplay = useComputed$(() => {
-        return JSON.stringify({ now: now.value, isValidate: isValidate.value, isTimeUp: isTimeUp.value, countdownTime: countdownTime.value }, null, "  ");
-    });
+    // const timeDisplay = useComputed$(() => {
+    //     return JSON.stringify({ now: now.value, isValidate: isValidate.value, isTimeUp: isTimeUp.value, countdownTime: countdownTime.value }, null, "  ");
+    // });
     const config = {
-        bgColor: "bg-white",
+        bgColor: "bg-primary-blue",
         animationDuration: 0.5,
     };
 
     return (
         <>
-            <pre>{timeDisplay.value}</pre>
-            <hr />
-            <div class="flex space-x-4">
-                <div class="flex space-x-2">
+            <div class="flex text-primary-red">
+                <div class="flex">
                     <FlipClockYear time={countdownTimeObject} animationDurationSec={config.animationDuration} backgroundColor={config.bgColor} />
                     <FlipClockMonth time={countdownTimeObject} animationDurationSec={config.animationDuration} backgroundColor={config.bgColor} />
                     <FlipClockDay time={countdownTimeObject} animationDurationSec={config.animationDuration} backgroundColor={config.bgColor} />
                 </div>
-                <div class="flex space-x-2">
+                <div class="flex">
                     <FlipClockHour time={countdownTimeObject} animationDurationSec={config.animationDuration} backgroundColor={config.bgColor} />
                     <FlipClockMinute time={countdownTimeObject} animationDurationSec={config.animationDuration} backgroundColor={config.bgColor} />
                     <FlipClockSecond time={countdownTimeObject} animationDurationSec={config.animationDuration} backgroundColor={config.bgColor} />

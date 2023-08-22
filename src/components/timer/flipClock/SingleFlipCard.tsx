@@ -4,10 +4,10 @@ import { isServer } from "@builder.io/qwik/build";
 const useClipPathClass = () => {
     useStylesScoped$(`
         .clip-top-half {
-            clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
+            clip-path: polygon(0 55%, 5% 50%, 95% 50%, 100% 55%, 100% 100%, 0 100%);
         }
         .clip-bottom-half {
-            clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%)
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 95% 50%, 5% 50%, 0% 45%)
         }
     `);
 };
@@ -51,45 +51,46 @@ export const HalfFlipCard = component$<FlipItemProps>(Props => {
     return <div class={`relative ${rootClass.value} fill-mode-forwards backface-hidden`}>{displayValue.value}</div>;
 });
 
-interface SingleFlipClockItemProps {
+interface MultipleDigitsFlipClockItemProps {
     digit: Signal<string[]>;
-    index: number;
     extraClass?: string;
 }
 
-export const SingleFlipClockItem = component$<SingleFlipClockItemProps>(Props => {
+export const MultipleDigitsFlipClockItem = component$<MultipleDigitsFlipClockItemProps>(Props => {
     useClipPathClass();
-    const currentValue = useComputed$(() => Props.digit.value[Props.index]);
+    const currentValue = useComputed$(() => Props.digit.value.join(""));
     const isFlippingTop = useSignal(false);
-    const prevValue = useSignal("");
+    const prevValue = useSignal(currentValue.value);
 
     const floatItemClass = "absolute z-10 left-0 top-0 w-full h-full";
+    const verticalPadding = "py-6";
+    const digitWidth = 0.65; // em
 
     useStylesScoped$(`
         .transform-3d {
             transform-style: preserve-3d;
-        }
-        .flip-card-width {
-            width: 0.65em;
         }
     `);
 
     useTask$(({ track }) => {
         track(() => isFlippingTop.value);
         if (!isServer && isFlippingTop.value === false) {
+            console.log("before update prev value", { prevValue: prevValue.value, currentValue: currentValue.value });
             prevValue.value = currentValue.value;
+            console.log("update prev value", { prevValue: prevValue.value, currentValue: currentValue.value });
         }
     });
 
     return (
-        <div class="flex flex-col relative text-6xl text-center transform-3d flip-card-width">
-            <div class={`relative z-10 left-0 top-0 w-full h-full ${Props.extraClass}`}>{currentValue}</div>
-            <div class={`${floatItemClass} z-10 clip-top-half ${Props.extraClass} ${isFlippingTop ? "opacity-100" : "opacity-0"}`}>{prevValue}</div>
+        <div class="flex flex-col relative text-6xl text-center transform-3d" style={`width: ${currentValue.value.length * digitWidth + 0.75}em`}>
+            <div class="h-px w-full absolute z-30 left-0 top-1/2 -translate-y-1/2 bg-neutral-blue-dark bg-opacity-50"></div>
+            <div class={`relative z-10 left-0 top-0 w-full h-full rounded-lg clip-bottom-half brightness-110 ${verticalPadding} ${Props.extraClass}`}>{currentValue}</div>
+            <div class={`${floatItemClass} z-10 clip-top-half rounded-lg brightness-90 ${Props.extraClass} ${isFlippingTop ? "opacity-100" : "opacity-0"} ${verticalPadding}`}>{prevValue}</div>
             <div class={`${floatItemClass} z-20 clip-top-half`}>
-                <HalfFlipCard digit={currentValue} extraClass={Props.extraClass} animateName="animate-flip-from-back" displayPart="bottom" />
+                <HalfFlipCard digit={currentValue} extraClass={`${Props.extraClass} rounded-lg brightness-90 ${verticalPadding}`} animateName="animate-flip-from-back" displayPart="bottom" />
             </div>
             <div class={`${floatItemClass} z-20 clip-bottom-half`}>
-                <HalfFlipCard digit={currentValue} extraClass={Props.extraClass} animateName="animate-flip-from-front" displayPart="top" isFlipping={isFlippingTop} />
+                <HalfFlipCard digit={currentValue} extraClass={`${Props.extraClass} rounded-lg brightness-110 ${verticalPadding}`} animateName="animate-flip-from-front" displayPart="top" isFlipping={isFlippingTop} />
             </div>
         </div>
     );
@@ -108,7 +109,6 @@ export const FlipClockCard = component$<FlipClockItemProps>(Props => {
         return trimZero ? String(Number(time)) : time;
     });
     const digits = useSignal<string[]>([]);
-    const digitCounts = useComputed$(() => timeValue.value.split("").length);
 
     const displayClass = useComputed$(() => {
         if (hideIfZero === false) return "";
@@ -123,10 +123,8 @@ export const FlipClockCard = component$<FlipClockItemProps>(Props => {
     });
 
     return (
-        <span class={`px-2 flex space-x-2 ${displayClass.value}`}>
-            {Array.from(Array(digitCounts.value).keys()).map((_, index) => {
-                return <SingleFlipClockItem key={index} digit={digits} index={index} extraClass={Props.extraClass} />;
-            })}
+        <span class={`flex ${displayClass.value}`}>
+            <MultipleDigitsFlipClockItem digit={digits} extraClass={Props.extraClass} />
         </span>
     );
 });
